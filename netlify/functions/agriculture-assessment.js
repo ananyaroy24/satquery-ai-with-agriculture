@@ -154,12 +154,24 @@ exports.handler = async function(event) {
     };
   }
 
-  // Use neutral proxy values (no image analysis available in static Netlify deployment)
-  var vegetation = 0.50;
-  var moisture   = 0.50;
-  var assessment =
-    "Moderate vegetation signal estimated (no image backend configured for this deployment). " +
-    "Crop rankings below are based on live weather data and your soil type selection.";
+  // Use real proxy values from browser Canvas analysis if provided,
+  // otherwise fall back to neutral defaults (location-only mode)
+  var vegetation = (typeof body.vegetation_proxy === "number" && !isNaN(body.vegetation_proxy))
+    ? Math.min(1, Math.max(0, body.vegetation_proxy))
+    : 0.50;
+  var moisture = (typeof body.soil_moisture_proxy === "number" && !isNaN(body.soil_moisture_proxy))
+    ? Math.min(1, Math.max(0, body.soil_moisture_proxy))
+    : 0.50;
+  var hasRealProxies = typeof body.vegetation_proxy === "number";
+  var assessment = body.land_assessment_override && typeof body.land_assessment_override === "string"
+    ? body.land_assessment_override
+    : hasRealProxies
+      ? (vegetation > 0.62
+          ? "Dense vegetation signal detected — active crop cover or perennial canopy likely present."
+          : vegetation > 0.45
+          ? "Moderate vegetation signal — the parcel may support seasonal cropping with moisture management."
+          : "Sparse vegetation signal — inspect soil cover and irrigation access before planting.")
+      : "Moderate vegetation signal estimated (location-only mode — upload an image for pixel-level NDVI analysis).";
 
   var weather = await getWeather(location);
 
