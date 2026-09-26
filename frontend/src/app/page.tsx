@@ -6,6 +6,7 @@ import { Navbar } from "../components/Navbar";
 import { ImageUploader } from "../components/ImageUploader";
 import { ExecutionTraceView } from "../components/ExecutionTraceView";
 import { ChatPanel, ChatMessage } from "../components/ChatPanel";
+import { PredictPanel } from "../components/PredictPanel";
 import {
   InputMode,
   ImageMeta,
@@ -52,7 +53,7 @@ export default function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
-  const [activePanel, setActivePanel] = useState<"upload" | "chat" | "trace">("upload");
+  const [activePanel, setActivePanel] = useState<"upload" | "chat" | "trace" | "predict">("upload");
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -126,11 +127,21 @@ export default function Home() {
 
   return (
     <div className="sol-shell">
-      {/* Deep space starfield layers */}
-      <div className="sol-stars-1" aria-hidden="true" />
-      <div className="sol-stars-2" aria-hidden="true" />
-      <div className="sol-nebula-left" aria-hidden="true" />
-      <div className="sol-nebula-right" aria-hidden="true" />
+      {/* ── FULLSCREEN MILKY WAY VIDEO BACKGROUND ── */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/milkyway-bg.mp4" type="video/mp4" />
+        </video>
+        {/* Gradient overlay to keep UI readable */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+      </div>
 
       {/* TOP NAV */}
       <Navbar onDownloadReport={handleDownloadReport} hasResult={!!currentResult} isGeneratingReport={isGeneratingReport} />
@@ -174,32 +185,27 @@ export default function Home() {
         {/* ══ CENTER COLUMN ══ */}
         <main className="sol-center">
 
-          {/* PLANET HERO */}
-          <section className="sol-planet-hero">
-            <div className="sol-orbit sol-orbit-1" />
-            <div className="sol-orbit sol-orbit-2" />
-            <div className="sol-orbit sol-orbit-3" />
-            <div className="sol-planet-glow" />
-            <div className="sol-planet">
-              <video autoPlay muted loop playsInline preload="metadata" className="sol-planet-video">
-                <source src="/earth-globe-loop.mp4" type="video/mp4" />
-              </video>
-              <div className="sol-planet-atm" />
+          {/* MILKY WAY HERO OVERLAY */}
+          <section className="relative flex flex-col items-center justify-center text-center py-16 px-4 overflow-hidden">
+            {/* Floating status badges */}
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
+              <div className="sol-badge" style={{position:'relative', top:'auto', left:'auto', right:'auto', bottom:'auto'}}>
+                <span className="sol-badge-dot sol-dot-green" /><span>ORBITAL SYNC · LIVE</span>
+              </div>
+              <div className="sol-badge" style={{position:'relative', top:'auto', left:'auto', right:'auto', bottom:'auto'}}>
+                <Target size={10} /><span>{activeSample?.location || "SELECT MISSION"}</span>
+              </div>
+              <div className="sol-badge" style={{position:'relative', top:'auto', left:'auto', right:'auto', bottom:'auto'}}>
+                <Cpu size={10} /><span>AI ACTIVE · <b>SatQuery v1</b></span>
+              </div>
             </div>
-            {/* Orbiting satellites */}
-            <div className="sol-sat sol-sat-1"><Satellite size={10} /></div>
-            <div className="sol-sat sol-sat-2"><Zap size={8} /></div>
-            <div className="sol-sat sol-sat-3"><Eye size={8} /></div>
-            {/* Floating badges */}
-            <div className="sol-badge sol-badge-tl"><span className="sol-badge-dot sol-dot-green" /><span>ORBITAL SYNC · LIVE</span></div>
-            <div className="sol-badge sol-badge-tr"><Target size={10} /><span>{activeSample?.location || "SELECT MISSION"}</span></div>
-            <div className="sol-badge sol-badge-br"><Cpu size={10} /><span>AI ACTIVE · <b>SatQuery v1</b></span></div>
-            {/* Hero text */}
-            <div className="sol-hero-text">
-              <div className="sol-hero-kicker"><span className="sol-dot-pulse" />ORBITAL OBSERVATION COMMAND</div>
-              <h1 className="sol-hero-h1">{activeSample ? activeSample.title : "See the planet"}<em> in a new light.</em></h1>
-              <p className="sol-hero-p">{activeSample ? activeSample.sensor_details : "Route optical, radar, and time-series imagery through an evidence-grounded AI mission control."}</p>
-            </div>
+            <div className="sol-hero-kicker mb-3"><span className="sol-dot-pulse" />ORBITAL OBSERVATION COMMAND</div>
+            <h1 className="sol-hero-h1 text-center">
+              {activeSample ? activeSample.title : "See the galaxy"}<em> in a new light.</em>
+            </h1>
+            <p className="sol-hero-p text-center max-w-xl mt-3">
+              {activeSample ? activeSample.sensor_details : "Route optical, radar, and time-series imagery through an evidence-grounded AI mission control."}
+            </p>
           </section>
 
           {/* Mission metadata strip */}
@@ -217,6 +223,9 @@ export default function Home() {
             <button className={`sol-tab ${activePanel === "upload" ? "sol-tab-active" : ""}`} onClick={() => setActivePanel("upload")}>
               <Layers size={12} /> Payload Ingestion
             </button>
+            <button className={`sol-tab ${activePanel === "predict" ? "sol-tab-active" : ""}`} onClick={() => setActivePanel("predict")}>
+              <Cpu size={12} /> EuroSAT Predict
+            </button>
             <button className={`sol-tab ${activePanel === "chat" ? "sol-tab-active" : ""}`} onClick={() => setActivePanel("chat")}>
               <Sparkles size={12} /> AI Analysis {isProcessing && <span className="sol-tab-pulse" />}
             </button>
@@ -231,6 +240,9 @@ export default function Home() {
           <div className="sol-panel">
             {activePanel === "upload" && (
               <ImageUploader inputMode={inputMode} onSelectMode={(mode) => setInputMode(mode)} images={images} onUploadSuccess={handleUploadSuccess} onClear={handleClear} apiBaseUrl={API_BASE} />
+            )}
+            {activePanel === "predict" && (
+              <PredictPanel />
             )}
             {activePanel === "chat" && (
               <div className="sol-chat-wrap">
@@ -297,33 +309,8 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
         </div>
 
-        {/* Top CTA Header Block */}
-        <div className="max-w-7xl w-full mx-auto pt-14 px-8 flex flex-col md:flex-row justify-between items-start z-10">
-          <div className="max-w-xl">
-            <span className="text-xs font-mono tracking-[0.25em] text-neutral-400 uppercase block mb-3">PARTNERSHIP</span>
-            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight">
-              Join The Next Era Of Human<br />Exploration
-            </h2>
-            <p className="text-sm text-neutral-400 mt-4">
-              Partner with ORBITA and help shape humanity's future beyond Earth.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-3 mt-6 md:mt-0 w-64">
-            <a href="#" className="bg-white text-black font-semibold text-xs tracking-wider uppercase px-6 py-3.5 flex justify-between items-center hover:bg-neutral-200 transition">
-              BECOME A PARTNER <span>↗</span>
-            </a>
-            <a href="#" className="bg-transparent border border-neutral-700 text-white font-semibold text-xs tracking-wider uppercase px-6 py-3.5 flex justify-between items-center hover:border-white transition">
-              CONTACT MISSION TEAM <span>↗</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Horizontal Divider Line */}
-        <div className="w-full border-t border-neutral-800 my-8 z-10"></div>
-
         {/* Lower Links & Legal Block */}
-        <div className="max-w-7xl w-full mx-auto pb-16 px-8 flex flex-col md:flex-row justify-between items-start gap-12 z-10 relative">
+        <div className="max-w-7xl w-full mx-auto pt-14 pb-16 px-8 flex flex-col md:flex-row justify-between items-start gap-12 z-10 relative">
           <div className="text-[11px] text-neutral-500 tracking-wider leading-relaxed font-mono">
             © 2026 ORBITA SPACE. ALL RIGHTS<br />RESERVED.
           </div>
