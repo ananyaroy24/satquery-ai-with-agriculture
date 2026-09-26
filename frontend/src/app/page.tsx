@@ -289,9 +289,76 @@ export default function Home() {
         </aside>
       </div>
 
-      <footer className="sol-footer">
-        <span>© 2026 SatQuery AI · Multimodal Remote Sensing Vision-Language Assistant</span>
-        <span className="sol-footer-mono">Smart India Hackathon (SIH) Ready · Production Architecture</span>
+      {/* ══ ORBITA STYLE FOOTER ══ */}
+      <footer className="relative w-full bg-black text-white font-sans overflow-hidden border-t border-neutral-900 flex flex-col justify-between mt-auto">
+        {/* Background Image & Gradient */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <img src="/footer-bg.jpg" alt="Martian Terrain" className="w-full h-full object-cover opacity-40 mix-blend-screen" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+        </div>
+
+        {/* Top CTA Header Block */}
+        <div className="max-w-7xl w-full mx-auto pt-14 px-8 flex flex-col md:flex-row justify-between items-start z-10">
+          <div className="max-w-xl">
+            <span className="text-xs font-mono tracking-[0.25em] text-neutral-400 uppercase block mb-3">PARTNERSHIP</span>
+            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight">
+              Join The Next Era Of Human<br />Exploration
+            </h2>
+            <p className="text-sm text-neutral-400 mt-4">
+              Partner with ORBITA and help shape humanity's future beyond Earth.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3 mt-6 md:mt-0 w-64">
+            <a href="#" className="bg-white text-black font-semibold text-xs tracking-wider uppercase px-6 py-3.5 flex justify-between items-center hover:bg-neutral-200 transition">
+              BECOME A PARTNER <span>↗</span>
+            </a>
+            <a href="#" className="bg-transparent border border-neutral-700 text-white font-semibold text-xs tracking-wider uppercase px-6 py-3.5 flex justify-between items-center hover:border-white transition">
+              CONTACT MISSION TEAM <span>↗</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Horizontal Divider Line */}
+        <div className="w-full border-t border-neutral-800 my-8 z-10"></div>
+
+        {/* Lower Links & Legal Block */}
+        <div className="max-w-7xl w-full mx-auto pb-16 px-8 flex flex-col md:flex-row justify-between items-start gap-12 z-10 relative">
+          <div className="text-[11px] text-neutral-500 tracking-wider leading-relaxed font-mono">
+            © 2026 ORBITA SPACE. ALL RIGHTS<br />RESERVED.
+          </div>
+
+          <div className="flex flex-row gap-16 md:gap-24">
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-white text-sm font-medium mb-4">Quick Link</h4>
+              <div className="flex gap-12 text-xs text-neutral-400 font-medium">
+                <ul className="space-y-2.5">
+                  <li><a href="#" className="hover:text-white transition">MISSION</a></li>
+                  <li><a href="#" className="hover:text-white transition">TECHNOLOGY</a></li>
+                  <li><a href="#" className="hover:text-white transition">RESEARCH</a></li>
+                  <li><a href="#" className="hover:text-white transition">ROADMAP</a></li>
+                </ul>
+                <ul className="space-y-2.5">
+                  <li><a href="#" className="hover:text-white transition">PARTNERS</a></li>
+                  <li><a href="#" className="hover:text-white transition">CAREERS</a></li>
+                  <li><a href="#" className="hover:text-white transition">CONTACT</a></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div>
+              <h4 className="text-white text-sm font-medium mb-4">Social</h4>
+              <ul className="space-y-2.5 text-xs text-neutral-400 font-medium">
+                <li><a href="#" className="hover:text-white transition">FACEBOOK</a></li>
+                <li><a href="#" className="hover:text-white transition">LINKDIN</a></li>
+                <li><a href="#" className="hover:text-white transition">INSTAGRAM</a></li>
+                <li><a href="#" className="hover:text-white transition">SPACEX</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </footer>
 
       {/* ══ MOBILE BOTTOM TAB BAR ══ */}
