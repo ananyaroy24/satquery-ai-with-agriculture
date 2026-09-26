@@ -29,10 +29,30 @@ export default function AgricultureDashboard() {
   const [inputMode] = useState<InputMode>("single_optical");
   const [images, setImages] = useState<ImageMeta[]>([]);
   const [sessionId, setSessionId] = useState("");
+  const [isLoadingDemo, setIsLoadingDemo] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const clear = () => {
     setImages([]);
     setSessionId("");
+  };
+
+  const handleLoadDemoParcel = async () => {
+    setIsLoadingDemo(true);
+    try {
+      const formData = new FormData();
+      formData.append("sample_id", "sample_agricultural_mosaic");
+      const res = await fetch(`${API_BASE}/api/load-sample`, { method: "POST", body: formData });
+      if (!res.ok) throw new Error("Could not load preset parcel");
+      const data = await res.json();
+      setSessionId(data.session_id);
+      setImages(data.images);
+    } catch (e) {
+      console.error(e);
+      alert("Please ensure the backend is running on port 8000.");
+    } finally {
+      setIsLoadingDemo(false);
+    }
   };
 
  return (
@@ -128,6 +148,8 @@ export default function AgricultureDashboard() {
  src="/oripio-agro-hero.jpg"
  alt="Modern luxury terraced farmland and greenhouse fields"
  className="oripio-hero-bg"
+ loading="eager"
+ decoding="async"
  />
  <div className="oripio-hero-gradient" />
 
@@ -310,13 +332,36 @@ export default function AgricultureDashboard() {
  <div className="oripio-workflow-row">
  {/* Step 1: Upload */}
  <div>
- <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+ <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
+ <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
  <span style={{ width: "26px", height: "26px", borderRadius: "50%", background: "#1b3826", color: "#4ade80", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "12px" }}>
  1
  </span>
  <h3 style={{ fontSize: "17px", fontWeight: "700", margin: 0, color: "#152d1f" }}>
  Upload Parcel Image
  </h3>
+ </div>
+ <button
+   type="button"
+   onClick={handleLoadDemoParcel}
+   disabled={isLoadingDemo}
+   style={{
+     display: "flex",
+     alignItems: "center",
+     gap: "6px",
+     background: "#eef7f1",
+     border: "1px solid #7ec293",
+     color: "#1e6935",
+     padding: "6px 12px",
+     borderRadius: "8px",
+     fontSize: "12px",
+     fontWeight: "600",
+     cursor: "pointer"
+   }}
+ >
+   <Sparkles size={13} />
+   <span>{isLoadingDemo ? "Loading demo…" : "Load Sample Parcel"}</span>
+ </button>
  </div>
  <p style={{ fontSize: "13px", color: "#5d7e67", margin: "0 0 16px 0" }}>
  Overhead drone orthomosaic, Sentinel-2 pass, or camera shot (PNG, JPG, TIFF).
@@ -353,6 +398,7 @@ export default function AgricultureDashboard() {
  <AgriculturePanel
  sessionId={sessionId}
  hasImages={images.length > 0}
+ defaultLocation="Nashik, Maharashtra"
  apiBaseUrl={API_BASE}
  />
  </div>
@@ -398,6 +444,8 @@ export default function AgricultureDashboard() {
  src="/oripio-smart-farm.jpg"
  alt="Farmer using smart sensor tablet in organic vegetable field"
  className="oripio-showcase-img"
+ loading="lazy"
+ decoding="async"
  />
  </div>
  </div>

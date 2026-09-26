@@ -615,26 +615,20 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
   flex: 1;
 }
 
-/* Glass Panels */
+/* Transparent Sidebars — no box borders */
 .sol-sidebar, .sol-right {
-  background: rgba(4, 8, 22, 0.45);
-  border: 1px solid rgba(126, 232, 255, 0.10);
-  border-radius: 20px;
-  backdrop-filter: blur(28px) saturate(160%);
-  -webkit-backdrop-filter: blur(28px) saturate(160%);
-  box-shadow:
-    0 0 0 1px rgba(126, 232, 255, 0.04) inset,
-    0 16px 48px rgba(0, 0, 0, 0.55),
-    0 0 80px rgba(0, 0, 0, 0.3);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  transition: none;
 }
 
 .sol-sidebar:hover, .sol-right:hover {
-  border-color: rgba(126, 232, 255, 0.18);
-  box-shadow:
-    0 0 0 1px rgba(126, 232, 255, 0.06) inset,
-    0 16px 48px rgba(0, 0, 0, 0.6),
-    0 0 60px rgba(126, 232, 255, 0.04);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 /* Left Sidebar */
@@ -654,7 +648,7 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
   align-items: center;
   justify-content: space-between;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sol-sidebar-label {
@@ -669,11 +663,11 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
 .sol-sidebar-count {
   font-family: var(--font-space-mono), monospace;
   font-size: 11px;
-  background: rgba(126, 232, 255, 0.12);
+  background: transparent;
   color: var(--sol-cyan);
   padding: 2px 7px;
   border-radius: 8px;
-  border: 1px solid rgba(126, 232, 255, 0.25);
+  border: none;
 }
 
 .sol-mission-list {
@@ -687,10 +681,10 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 11px 12px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 11px 8px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid transparent;
   color: var(--sol-text-muted);
   text-align: left;
   cursor: pointer;
@@ -698,17 +692,17 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
 }
 
 .sol-mission-card:hover {
-  background: rgba(126, 232, 255, 0.08);
-  border-color: rgba(126, 232, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(126, 232, 255, 0.15);
   color: #fff;
   transform: translateX(3px);
 }
 
 .sol-mission-active {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(126, 232, 255, 0.14)) !important;
-  border-color: rgba(126, 232, 255, 0.45) !important;
+  background: rgba(126, 232, 255, 0.08) !important;
+  border-color: rgba(126, 232, 255, 0.25) !important;
   color: #fff !important;
-  box-shadow: 0 4px 18px rgba(126, 232, 255, 0.12);
+  box-shadow: 0 0 18px rgba(126, 232, 255, 0.06);
 }
 
 .sol-mission-icon {
@@ -788,16 +782,17 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
   align-items: center;
   justify-content: space-between;
   font-size: 11px;
-  padding: 6px 9px;
-  border-radius: 8px;
-  background: rgba(126, 232, 255, 0.03);
-  border: 1px solid rgba(126, 232, 255, 0.06);
-  transition: background 0.2s, border-color 0.2s;
+  padding: 6px 4px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.2s;
 }
 
 .sol-stat-row:hover {
-  background: rgba(126, 232, 255, 0.07);
-  border-color: rgba(126, 232, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .sol-stat-row span {
@@ -976,22 +971,23 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px;
+  padding: 5px 14px;
   border-radius: 20px;
-  background: rgba(4, 8, 22, 0.55);
-  border: 1px solid rgba(126, 232, 255, 0.20);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   font-family: var(--font-space-mono), monospace;
   font-size: 10.5px;
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 12px rgba(126, 232, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow: none;
   transition: all 0.2s ease;
 }
 
 .sol-badge:hover {
-  border-color: rgba(126, 232, 255, 0.4);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 20px rgba(126, 232, 255, 0.12);
+  border-color: rgba(126, 232, 255, 0.2);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 0 16px rgba(126, 232, 255, 0.06);
 }
 
 .sol-badge-tl { top: 20px; left: 24px; }
@@ -1068,18 +1064,19 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
   margin: 0;
 }
 
-/* Meta Strip */
+/* Meta Strip — transparent, no box */
 .sol-meta-strip {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  padding: 10px 18px;
-  border-radius: 14px;
-  background: rgba(4, 8, 22, 0.45);
-  border: 1px solid rgba(126, 232, 255, 0.10);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  gap: 16px;
+  padding: 10px 4px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .sol-meta-item {
@@ -1094,42 +1091,46 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
   color: var(--sol-cyan);
 }
 
-/* Panel Tabs */
+/* Panel Tabs — pill style, subtle glass */
 .sol-tabs {
   display: flex;
-  gap: 10px;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.04);
+  width: fit-content;
 }
 
 .sol-tab {
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 9px 18px;
+  padding: 9px 20px;
   border-radius: 24px;
-  background: rgba(4, 8, 22, 0.5);
-  border: 1px solid rgba(126, 232, 255, 0.10);
+  background: transparent;
+  border: 1px solid transparent;
   color: var(--sol-text-muted);
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .sol-tab:hover {
-  background: rgba(126, 232, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
   color: #fff;
-  border-color: rgba(126, 232, 255, 0.28);
-  box-shadow: 0 0 16px rgba(126, 232, 255, 0.08);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .sol-tab-active {
-  background: linear-gradient(135deg, rgba(126, 232, 255, 0.18), rgba(99, 102, 241, 0.22)) !important;
-  border-color: rgba(126, 232, 255, 0.55) !important;
+  background: rgba(126, 232, 255, 0.12) !important;
+  border-color: rgba(126, 232, 255, 0.35) !important;
   color: #fff !important;
-  box-shadow: 0 0 18px rgba(126, 232, 255, 0.18), 0 4px 18px rgba(0,0,0,0.3);
-  text-shadow: 0 0 12px rgba(126, 232, 255, 0.6);
+  box-shadow: 0 0 20px rgba(126, 232, 255, 0.10);
+  text-shadow: 0 0 10px rgba(126, 232, 255, 0.5);
 }
 
 .sol-tab-pulse {
@@ -1141,18 +1142,15 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
   animation: solPulse 1.2s infinite;
 }
 
-/* Panel Content Area */
+/* Panel Content Area — borderless and seamless */
 .sol-panel {
-  background: rgba(4, 8, 22, 0.45);
-  border: 1px solid rgba(126, 232, 255, 0.10);
-  border-radius: 20px;
-  padding: 20px;
-  backdrop-filter: blur(28px) saturate(160%);
-  -webkit-backdrop-filter: blur(28px) saturate(160%);
-  box-shadow:
-    0 0 0 1px rgba(126, 232, 255, 0.04) inset,
-    0 16px 48px rgba(0, 0, 0, 0.55);
-  transition: border-color 0.3s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 8px 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
 }
 
 .sol-chat-wrap {
@@ -1203,27 +1201,28 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
 }
 
 .sol-action-primary {
-  background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+  background: rgba(126, 232, 255, 0.12);
   color: #fff;
-  border: none;
-  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.28);
+  border: 1px solid rgba(126, 232, 255, 0.2);
+  box-shadow: none;
 }
 
 .sol-action-primary:hover {
-  background: linear-gradient(135deg, #4338ca, #0284c7);
-  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+  background: rgba(126, 232, 255, 0.2);
+  border-color: rgba(126, 232, 255, 0.4);
+  box-shadow: 0 0 20px rgba(126, 232, 255, 0.1);
   transform: translateY(-1px);
 }
 
 .sol-action-report {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(126, 232, 255, 0.3);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--sol-cyan);
 }
 
 .sol-action-report:hover:not(:disabled) {
-  background: rgba(126, 232, 255, 0.1);
-  border-color: var(--sol-cyan);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(126, 232, 255, 0.3);
   transform: translateY(-1px);
 }
 
@@ -1243,10 +1242,11 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
   display: flex;
   align-items: flex-start;
   gap: 7px;
-  padding: 8px 11px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 6px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   color: var(--sol-text-muted);
   font-size: 11.5px;
   text-align: left;
@@ -1262,17 +1262,18 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
 }
 
 .sol-query-btn:hover {
-  background: rgba(126, 232, 255, 0.08);
-  border-color: rgba(126, 232, 255, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(126, 232, 255, 0.15);
   color: #fff;
 }
 
 /* Mission Detail in Right Sidebar */
 .sol-mission-detail {
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 12px 4px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .sol-mission-detail-title {
@@ -1307,10 +1308,11 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
 
 /* Last Result Mini Card */
 .sol-result-mini {
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(126, 232, 255, 0.2);
+  padding: 12px 4px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
   gap: 7px;
@@ -2102,6 +2104,26 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
 .agro-oripio-shell .border-2 {
   border-color: rgba(46, 125, 68, 0.2) !important;
   border-radius: 18px !important;
+}
+
+.agro-oripio-shell .oripio-upload-box .border-dashed {
+  border-color: rgba(46, 125, 68, 0.3) !important;
+  background: #ffffff !important;
+}
+
+.agro-oripio-shell .oripio-upload-box .border-dashed:hover {
+  border-color: #2e7d44 !important;
+  background: #f4faf5 !important;
+}
+
+.agro-oripio-shell .oripio-upload-box .border-dashed p,
+.agro-oripio-shell .oripio-upload-box .border-dashed span {
+  color: #1b3826 !important;
+}
+
+.agro-oripio-shell .oripio-upload-box .bg-white\/\[0\.04\] {
+  background: #f4faf5 !important;
+  border-color: rgba(46, 125, 68, 0.2) !important;
 }
 
 .agro-oripio-shell .text-slate-100,

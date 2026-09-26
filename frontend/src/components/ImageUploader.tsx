@@ -125,7 +125,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">
           Earth Observation Modality
         </label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1.5 rounded-xl bg-slate-900/90 border border-slate-800">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1.5 rounded-xl bg-white/[0.03] border border-white/10 backdrop-blur-md">
           {modeOptions.map((opt) => {
             const Icon = opt.icon;
             const isSelected = inputMode === opt.id;
@@ -138,8 +138,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 }}
                 className={`flex items-center gap-2.5 p-2.5 sm:p-2 rounded-lg text-left transition ${
                   isSelected
-                    ? "bg-gradient-to-r from-cyan-950/80 to-slate-900 text-cyan-300 border border-cyan-700/80 shadow-sm"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                    ? "bg-cyan-500/15 text-cyan-300 border border-cyan-400/40 shadow-[0_0_15px_rgba(34,211,238,0.15)]"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent"
                 }`}
               >
                 <Icon className={`w-4 h-4 shrink-0 ${isSelected ? "text-cyan-400" : "text-slate-500"}`} />
@@ -160,10 +160,10 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           onDragLeave={() => setDragActive(false)}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`relative border-2 border-dashed rounded-xl p-6 text-center transition cursor-pointer ${
+          className={`relative border border-dashed rounded-2xl p-8 text-center transition cursor-pointer backdrop-blur-sm ${
             dragActive
               ? "border-cyan-400 bg-cyan-950/20"
-              : "border-slate-700 hover:border-cyan-500/80 bg-slate-900/40 hover:bg-slate-900/70"
+              : "border-white/15 hover:border-cyan-400/60 bg-white/[0.02] hover:bg-white/[0.05]"
           }`}
         >
           <input
@@ -214,9 +214,9 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             {images.map((img, idx) => (
               <div
                 key={idx}
-                className="group relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 p-2 text-xs"
+                className="group relative rounded-xl overflow-hidden bg-white/[0.04] border border-white/10 p-2.5 text-xs backdrop-blur-md hover:border-cyan-400/40 transition"
               >
-                <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-slate-950 mb-2">
+                <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-black/40 mb-2">
                   <img
                     src={`${apiBaseUrl}${img.url}`}
                     alt={img.filename}

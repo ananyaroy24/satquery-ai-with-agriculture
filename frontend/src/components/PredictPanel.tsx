@@ -47,18 +47,18 @@ export function PredictPanel() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-8 text-white">
-      <div className="max-w-2xl w-full text-center mb-8">
-        <h2 className="text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
+    <div className="w-full h-full flex flex-col items-center justify-center py-6 px-4 text-white">
+      <div className="max-w-2xl w-full text-center mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-teal-300">
           EuroSAT Classification
         </h2>
-        <p className="text-sm text-gray-400">
+        <p className="text-xs md:text-sm text-gray-400">
           Upload a satellite image to classify it using our custom PyTorch ResNet18 model.
         </p>
       </div>
 
-      <div className="bg-[#111] border border-gray-800 rounded-xl p-8 shadow-2xl w-full max-w-2xl">
-        <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-700 rounded-lg p-10 bg-[#1a1a1a] hover:border-blue-500 transition-colors">
+      <div className="w-full max-w-2xl bg-white/[0.03] border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-md">
+        <div className="flex flex-col items-center justify-center border-2 border-dashed border-white/15 rounded-xl p-8 bg-transparent hover:border-cyan-400/60 transition-colors">
           {previewUrl ? (
             <div className="flex flex-col items-center">
               <img src={previewUrl} alt="Preview" className="w-48 h-48 object-cover rounded-lg shadow-lg mb-6" />

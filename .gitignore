@@ -13,6 +13,9 @@ dist/
 build/
 
 # Python
+backend/data/
+*.pth
+*.zip
 __pycache__/
 *.py[cod]
 *$py.class
