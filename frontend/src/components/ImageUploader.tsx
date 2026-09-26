@@ -125,7 +125,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">
           Earth Observation Modality
         </label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1.5 rounded-xl bg-white/[0.03] border border-white/10 backdrop-blur-md">
+        <div className="grid grid-cols-2 sm:grid-cols-2 gap-1.5 sm:gap-2 p-1 sm:p-1.5 rounded-xl bg-white/[0.03] border border-white/10 backdrop-blur-md">
           {modeOptions.map((opt) => {
             const Icon = opt.icon;
             const isSelected = inputMode === opt.id;
@@ -136,16 +136,16 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                   onSelectMode(opt.id);
                   setUploadError(null);
                 }}
-                className={`flex items-center gap-2.5 p-2.5 sm:p-2 rounded-lg text-left transition ${
+                className={`flex items-center gap-1.5 sm:gap-2.5 p-2 sm:p-2 rounded-lg text-left transition ${
                   isSelected
                     ? "bg-cyan-500/15 text-cyan-300 border border-cyan-400/40 shadow-[0_0_15px_rgba(34,211,238,0.15)]"
                     : "text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent"
                 }`}
               >
-                <Icon className={`w-4 h-4 shrink-0 ${isSelected ? "text-cyan-400" : "text-slate-500"}`} />
+                <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${isSelected ? "text-cyan-400" : "text-slate-500"}`} />
                 <div className="min-w-0 flex-1">
-                  <div className="text-xs font-semibold">{opt.label}</div>
-                  <div className="text-[10px] text-slate-400 leading-snug sm:truncate">{opt.hint}</div>
+                  <div className="text-[11px] sm:text-xs font-semibold leading-tight truncate">{opt.label}</div>
+                  <div className="text-[9px] sm:text-[10px] text-slate-400 leading-snug truncate">{opt.hint}</div>
                 </div>
               </button>
             );
@@ -160,7 +160,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           onDragLeave={() => setDragActive(false)}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`relative border border-dashed rounded-2xl p-8 text-center transition cursor-pointer backdrop-blur-sm ${
+          className={`relative border border-dashed rounded-xl sm:rounded-2xl p-4 sm:p-8 text-center transition cursor-pointer backdrop-blur-sm ${
             dragActive
               ? "border-cyan-400 bg-cyan-950/20"
               : "border-white/15 hover:border-cyan-400/60 bg-white/[0.02] hover:bg-white/[0.05]"
@@ -174,23 +174,23 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             className="hidden"
             onChange={(e) => handleFiles(e.target.files)}
           />
-          <div className="flex flex-col items-center justify-center gap-2.5">
-            <div className="w-12 h-12 rounded-full bg-cyan-950/60 border border-cyan-800/80 flex items-center justify-center text-cyan-400">
-              <Upload className="w-6 h-6 animate-bounce" />
+          <div className="flex flex-col items-center justify-center gap-2">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-950/60 border border-cyan-800/80 flex items-center justify-center text-cyan-400">
+              <Upload className="w-5 h-5 sm:w-6 sm:h-6 animate-bounce" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-200">
+              <p className="text-xs sm:text-sm font-semibold text-slate-200">
                 {isUploading ? "Verifying Raster Geometry..." : `Upload ${currentMode.label}`}
               </p>
-              <p className="text-xs text-slate-400 mt-1">
-                Drag & drop {currentMode.filesNeeded} image{currentMode.filesNeeded > 1 ? "s" : ""} or click to browse
+              <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5">
+                Tap or drag {currentMode.filesNeeded} image{currentMode.filesNeeded > 1 ? "s" : ""}
               </p>
             </div>
-            <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-500">
-              <span className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700">GeoTIFF</span>
-              <span className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700">TIFF</span>
-              <span className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700">PNG</span>
-              <span className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700">JPEG</span>
+            <div className="flex flex-wrap justify-center items-center gap-1.5 mt-1 text-[10px] sm:text-[11px] text-slate-500">
+              <span className="px-1.5 py-0.5 rounded bg-slate-800/80 border border-slate-700">GeoTIFF</span>
+              <span className="px-1.5 py-0.5 rounded bg-slate-800/80 border border-slate-700">TIFF</span>
+              <span className="px-1.5 py-0.5 rounded bg-slate-800/80 border border-slate-700">PNG</span>
+              <span className="px-1.5 py-0.5 rounded bg-slate-800/80 border border-slate-700">JPEG</span>
             </div>
           </div>
         </div>

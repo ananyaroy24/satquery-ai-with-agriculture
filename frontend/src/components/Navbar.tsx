@@ -33,14 +33,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <h1 className="text-base sm:text-xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-sky-200 to-white bg-clip-text text-transparent truncate">
+              <h1 className="text-sm sm:text-xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-sky-200 to-white bg-clip-text text-transparent truncate">
                 SatQuery AI
               </h1>
-              <span className="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-800/80 shrink-0">
+              <span className="px-1.5 py-0.5 text-[8px] sm:text-[10px] font-semibold uppercase tracking-wider rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-800/80 shrink-0">
                 PRO
               </span>
             </div>
-            <p className="text-[10px] sm:text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-none">
+            <p className="hidden sm:block text-[10px] sm:text-[11px] text-slate-400 truncate">
               Remote Sensing & Agro Vision
             </p>
           </div>
@@ -51,27 +51,27 @@ export const Navbar: React.FC<NavbarProps> = ({
           <Link 
             href="/agriculture"
             prefetch={true}
-            className="agri-nav-link flex items-center gap-1.5 text-xs font-semibold px-2.5 sm:px-3 py-2 rounded-lg transition"
+            className="agri-nav-link flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-emerald-950/50 hover:bg-emerald-900/60 border border-emerald-500/30 text-emerald-300 transition"
           >
-            <Sprout className="w-3.5 h-3.5 text-emerald-400" />
+            <Sprout className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
             <span className="inline">Agriculture</span>
           </Link>
           {/* Download PDF Intelligence Report */}
           <button
             onClick={onDownloadReport}
             disabled={!hasResult || isGeneratingReport}
-            className={`flex items-center gap-1.5 sm:gap-2 text-xs font-semibold px-2.5 sm:px-3 py-2 rounded-lg transition shadow-sm ${
+            className={`flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition shadow-sm ${
               hasResult
                 ? "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold glow-cyan cursor-pointer active:scale-95"
                 : "bg-slate-800/60 text-slate-500 border border-slate-800 cursor-not-allowed opacity-60"
             }`}
             title={hasResult ? "Download publication-ready PDF report" : "Execute a query first to generate a report"}
           >
-            <FileDown className="w-3.5 h-3.5" />
+            <FileDown className="w-3.5 h-3.5 shrink-0" />
             <span className="hidden sm:inline">
               {isGeneratingReport ? "Generating..." : "Export Report"}
             </span>
-            <span className="sm:hidden text-[11px]">
+            <span className="sm:hidden font-bold">
               {isGeneratingReport ? "PDF…" : "PDF"}
             </span>
           </button>

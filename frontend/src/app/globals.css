@@ -2870,7 +2870,7 @@ html, body, .sol-shell {
     width: 100% !important;
     max-width: 100vw !important;
     overflow-x: hidden !important;
-    padding: 8px 10px 84px 10px !important;
+    padding: 8px 10px 120px 10px !important;
     gap: 12px !important;
     box-sizing: border-box !important;
   }

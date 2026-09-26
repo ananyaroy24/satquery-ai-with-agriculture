@@ -186,24 +186,24 @@ export default function Home() {
         <main className="sol-center">
 
           {/* MILKY WAY HERO OVERLAY */}
-          <section className="relative flex flex-col items-center justify-center text-center py-16 px-4 overflow-hidden">
+          <section className="relative flex flex-col items-center justify-center text-center py-4 sm:py-12 px-2 sm:px-4 overflow-hidden">
             {/* Floating status badges */}
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
-              <div className="sol-badge" style={{position:'relative', top:'auto', left:'auto', right:'auto', bottom:'auto'}}>
+            <div className="flex flex-wrap justify-center gap-1.5 sm:gap-3 mb-3 sm:mb-6">
+              <div className="sol-badge !py-1 !px-2.5 text-[9.5px] sm:text-xs" style={{position:'relative', top:'auto', left:'auto', right:'auto', bottom:'auto'}}>
                 <span className="sol-badge-dot sol-dot-green" /><span>ORBITAL SYNC · LIVE</span>
               </div>
-              <div className="sol-badge" style={{position:'relative', top:'auto', left:'auto', right:'auto', bottom:'auto'}}>
-                <Target size={10} /><span>{activeSample?.location || "SELECT MISSION"}</span>
+              <div className="sol-badge !py-1 !px-2.5 text-[9.5px] sm:text-xs max-w-[170px] sm:max-w-none truncate" style={{position:'relative', top:'auto', left:'auto', right:'auto', bottom:'auto'}}>
+                <Target size={10} className="shrink-0" /><span className="truncate">{activeSample?.location || "SELECT MISSION"}</span>
               </div>
-              <div className="sol-badge" style={{position:'relative', top:'auto', left:'auto', right:'auto', bottom:'auto'}}>
-                <Cpu size={10} /><span>AI ACTIVE · <b>SatQuery v1</b></span>
+              <div className="sol-badge !py-1 !px-2.5 text-[9.5px] sm:text-xs" style={{position:'relative', top:'auto', left:'auto', right:'auto', bottom:'auto'}}>
+                <Cpu size={10} className="shrink-0" /><span>AI ACTIVE · <b>SatQuery v1</b></span>
               </div>
             </div>
-            <div className="sol-hero-kicker mb-3"><span className="sol-dot-pulse" />ORBITAL OBSERVATION COMMAND</div>
-            <h1 className="sol-hero-h1 text-center">
+            <div className="sol-hero-kicker mb-2 text-[9px] sm:text-[10px]"><span className="sol-dot-pulse" />ORBITAL OBSERVATION COMMAND</div>
+            <h1 className="sol-hero-h1 text-center text-xl sm:text-3xl font-extrabold leading-tight">
               {activeSample ? activeSample.title : "See the galaxy"}<em> in a new light.</em>
             </h1>
-            <p className="sol-hero-p text-center max-w-xl mt-3">
+            <p className="sol-hero-p text-center max-w-xl mt-2 text-xs sm:text-sm text-slate-300">
               {activeSample ? activeSample.sensor_details : "Route optical, radar, and time-series imagery through an evidence-grounded AI mission control."}
             </p>
           </section>
