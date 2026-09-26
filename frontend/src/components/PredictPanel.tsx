@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Upload, Loader2, Image as ImageIcon } from "lucide-react";
+import { API_BASE_URL, API_CONFIGURATION_MESSAGE, apiUrl } from "../lib/api";
 
 export function PredictPanel() {
   const [file, setFile] = useState<File | null>(null);
@@ -21,6 +22,11 @@ export function PredictPanel() {
   const handleUpload = async () => {
     if (!file) return;
 
+    if (!API_BASE_URL) {
+      setResult({ error: API_CONFIGURATION_MESSAGE });
+      return;
+    }
+
     setLoading(true);
     setResult(null);
 
@@ -28,7 +34,7 @@ export function PredictPanel() {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8000/predict", {
+      const response = await fetch(apiUrl("/predict"), {
         method: "POST",
         body: formData,
       });

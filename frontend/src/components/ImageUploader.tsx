@@ -14,6 +14,7 @@ import {
   Info
 } from "lucide-react";
 import { InputMode, ImageMeta } from "../types";
+import { API_CONFIGURATION_MESSAGE } from "../lib/api";
 
 interface ImageUploaderProps {
   inputMode: InputMode;
@@ -75,6 +76,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const handleFiles = async (fileList: FileList | null) => {
     if (!fileList || fileList.length === 0) return;
     setUploadError(null);
+
+    if (!apiBaseUrl) {
+      setUploadError(API_CONFIGURATION_MESSAGE);
+      return;
+    }
 
     if (fileList.length !== currentMode.filesNeeded) {
       setUploadError(

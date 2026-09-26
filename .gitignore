@@ -41,6 +41,7 @@ backend/static/reports/*
 .env.test
 .env.production
 frontend/.env*
+!frontend/.env.example
 
 # Logs
 npm-debug.log*

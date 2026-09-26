@@ -22,8 +22,7 @@ import {
 import { AgriculturePanel } from "../../components/AgriculturePanel";
 import { ImageUploader } from "../../components/ImageUploader";
 import { ImageMeta, InputMode } from "../../types";
-
-const API_BASE = typeof window !== "undefined" ? `${window.location.protocol}//${window.location.hostname}:8000` : "http://localhost:8000";
+import { API_BASE_URL, API_CONFIGURATION_MESSAGE, apiUrl } from "../../lib/api";
 
 export default function AgricultureDashboard() {
   const [inputMode] = useState<InputMode>("single_optical");
@@ -38,18 +37,23 @@ export default function AgricultureDashboard() {
   };
 
   const handleLoadDemoParcel = async () => {
+    if (!API_BASE_URL) {
+      alert(API_CONFIGURATION_MESSAGE);
+      return;
+    }
+
     setIsLoadingDemo(true);
     try {
       const formData = new FormData();
-      formData.append("sample_id", "sample_agricultural_mosaic");
-      const res = await fetch(`${API_BASE}/api/load-sample`, { method: "POST", body: formData });
+      formData.append("sample_id", "sample_bigearthnet_agri");
+      const res = await fetch(apiUrl("/api/load-sample"), { method: "POST", body: formData });
       if (!res.ok) throw new Error("Could not load preset parcel");
       const data = await res.json();
       setSessionId(data.session_id);
       setImages(data.images);
     } catch (e) {
       console.error(e);
-      alert("Please ensure the backend is running on port 8000.");
+      alert(e instanceof Error ? e.message : "Could not load the sample parcel.");
     } finally {
       setIsLoadingDemo(false);
     }
@@ -376,7 +380,7 @@ export default function AgricultureDashboard() {
  setSessionId(id);
  }}
  onClear={clear}
- apiBaseUrl={API_BASE}
+ apiBaseUrl={API_BASE_URL}
  showModeSelector={false}
  />
  </div>
@@ -399,7 +403,7 @@ export default function AgricultureDashboard() {
  sessionId={sessionId}
  hasImages={images.length > 0}
  defaultLocation="Nashik, Maharashtra"
- apiBaseUrl={API_BASE}
+ apiBaseUrl={API_BASE_URL}
  />
  </div>
  </div>

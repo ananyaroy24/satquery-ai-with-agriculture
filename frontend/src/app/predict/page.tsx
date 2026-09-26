@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Upload, Loader2, Image as ImageIcon } from "lucide-react";
+import { API_BASE_URL, API_CONFIGURATION_MESSAGE, apiUrl } from "../../lib/api";
 
 export default function PredictPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -22,6 +23,11 @@ export default function PredictPage() {
   const handleUpload = async () => {
     if (!file) return;
 
+    if (!API_BASE_URL) {
+      setResult({ error: API_CONFIGURATION_MESSAGE });
+      return;
+    }
+
     setLoading(true);
     setResult(null);
 
@@ -29,8 +35,7 @@ export default function PredictPage() {
     formData.append("file", file);
 
     try {
-      // Connect to the Python FastAPI backend on port 8000
-      const response = await fetch("http://localhost:8000/predict", {
+      const response = await fetch(apiUrl("/predict"), {
         method: "POST",
         body: formData,
       });

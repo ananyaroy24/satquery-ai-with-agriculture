@@ -63,8 +63,8 @@
 
 ### 1. Backend Setup (FastAPI)
 ```bash
-cd backend
-pip install -r requirements.txt
+# Run these commands from the project root.
+pip install -r backend/requirements.txt
 python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 *Backend API docs will be available at: `http://localhost:8000/docs`*
@@ -83,6 +83,24 @@ Ensure your phone is connected to the same Wi-Fi network as your host computer. 
 http://<YOUR_LOCAL_IP>:3000
 ```
 *(e.g., `http://192.168.31.124:3000`)*
+
+---
+
+## Netlify deployment
+
+Netlify hosts the static Next.js frontend, but it cannot run this Python/FastAPI service. Deploy the `backend` directory to a Python-capable host first, using this start command:
+
+```bash
+uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+```
+
+Then, in Netlify **Project configuration → Environment variables**, add this build-time variable and trigger a new deployment:
+
+```text
+NEXT_PUBLIC_API_BASE_URL=https://your-fastapi-service.example.com
+```
+
+Use the exact HTTPS URL of the deployed backend, without a trailing slash. The public variable is baked into the frontend during `npm run build`; changing it requires a redeploy. See `frontend/.env.example` for local configuration.
 
 ---
 

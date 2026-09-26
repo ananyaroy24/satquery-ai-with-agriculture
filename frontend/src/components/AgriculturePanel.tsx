@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { CloudSun, Droplets, LoaderCircle, MapPin, Sprout, Thermometer, Waves } from "lucide-react";
 import { AgricultureResponse } from "../types";
+import { API_CONFIGURATION_MESSAGE } from "../lib/api";
 
 interface AgriculturePanelProps {
   sessionId: string;
@@ -24,6 +25,7 @@ export const AgriculturePanel: React.FC<AgriculturePanelProps> = ({ sessionId, h
   const assess = async () => {
     if (!sessionId || !hasImages) { setError("Upload land imagery before starting a crop assessment."); return; }
     if (location.trim().length < 2) { setError("Enter a town, district, or coordinates to obtain weather conditions."); return; }
+    if (!apiBaseUrl) { setError(API_CONFIGURATION_MESSAGE); return; }
     setLoading(true); setError("");
     try {
       const response = await fetch(`${apiBaseUrl}/api/agriculture-assessment`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ session_id: sessionId, location: location.trim(), soil_type: soilType }) });

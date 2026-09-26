@@ -7,6 +7,7 @@ import { ImageUploader } from "../components/ImageUploader";
 import { ExecutionTraceView } from "../components/ExecutionTraceView";
 import { ChatPanel, ChatMessage } from "../components/ChatPanel";
 import { PredictPanel } from "../components/PredictPanel";
+import { API_BASE_URL, API_CONFIGURATION_MESSAGE, apiUrl } from "../lib/api";
 import {
   InputMode,
   ImageMeta,
@@ -33,8 +34,6 @@ import {
   BookOpen,
 } from "lucide-react";
 
-const API_BASE = typeof window !== "undefined" ? `${window.location.protocol}//${window.location.hostname}:8000` : "http://localhost:8000";
-
 const SYSTEM_STATS = [
   { label: "Satellites Online", value: "847", unit: "", icon: Satellite, color: "sol-stat-cyan" },
   { label: "Coverage", value: "98.4", unit: "%", icon: Globe, color: "sol-stat-purple" },
@@ -57,7 +56,12 @@ export default function Home() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/sample-datasets`)
+    if (!API_BASE_URL) {
+      console.warn(API_CONFIGURATION_MESSAGE);
+      return;
+    }
+
+    fetch(apiUrl("/api/sample-datasets"))
       .then((res) => res.json())
       .then((data: unknown) => {
         const availableSamples = Array.isArray(data) ? data as SampleDatasetItem[] : [];
@@ -68,6 +72,11 @@ export default function Home() {
   }, []);
 
   const handleSelectSample = async (sampleId: string, availableSamples = samples) => {
+    if (!API_BASE_URL) {
+      alert(API_CONFIGURATION_MESSAGE);
+      return;
+    }
+
     setSelectedSampleId(sampleId);
     if (!sampleId) return;
     const sample = availableSamples.find((s) => s.id === sampleId);
@@ -77,7 +86,7 @@ export default function Home() {
     try {
       const formData = new FormData();
       formData.append("sample_id", sampleId);
-      const res = await fetch(`${API_BASE}/api/load-sample`, { method: "POST", body: formData });
+      const res = await fetch(apiUrl("/api/load-sample"), { method: "POST", body: formData });
       if (!res.ok) throw new Error("Failed to load preset");
       const data = await res.json();
       setSessionId(data.session_id);
@@ -97,11 +106,12 @@ export default function Home() {
 
   const handleSendMessage = async (queryText: string) => {
     if (images.length === 0) { alert("Please upload imagery or load a demo scenario first!"); return; }
+    if (!API_BASE_URL) { alert(API_CONFIGURATION_MESSAGE); return; }
     setMessages((prev) => [...prev, { id: `msg_user_${Date.now()}`, sender: "user", content: queryText, timestamp: new Date().toLocaleTimeString() }]);
     setIsProcessing(true);
     setActivePanel("chat");
     try {
-      const res = await fetch(`${API_BASE}/api/query`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: queryText, input_mode: inputMode, session_id: sessionId }) });
+      const res = await fetch(apiUrl("/api/query"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: queryText, input_mode: inputMode, session_id: sessionId }) });
       if (!res.ok) { const err = await res.json(); throw new Error(err.detail || "Query execution failed"); }
       const result: QueryResponse = await res.json();
       setCurrentResult(result);
@@ -113,12 +123,13 @@ export default function Home() {
 
   const handleDownloadReport = async () => {
     if (!currentResult || !sessionId) return;
+    if (!API_BASE_URL) { alert(API_CONFIGURATION_MESSAGE); return; }
     setIsGeneratingReport(true);
     try {
-      const res = await fetch(`${API_BASE}/api/generate-report`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ session_id: sessionId, query: messages.filter((m) => m.sender === "user").slice(-1)[0]?.content || "Remote Sensing Analysis", answer: currentResult.answer, detected_task: currentResult.detected_task, selected_model: currentResult.selected_model, confidence_score: currentResult.confidence_score, execution_trace: currentResult.execution_trace, quantitative_metrics: currentResult.quantitative_metrics, image_urls: { primary: currentResult.visual_evidence.primary_image_url, overlay: currentResult.visual_evidence.overlay_image_url, diff: currentResult.visual_evidence.diff_mask_url, fusion: currentResult.visual_evidence.fusion_image_url } }) });
+      const res = await fetch(apiUrl("/api/generate-report"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ session_id: sessionId, query: messages.filter((m) => m.sender === "user").slice(-1)[0]?.content || "Remote Sensing Analysis", answer: currentResult.answer, detected_task: currentResult.detected_task, selected_model: currentResult.selected_model, confidence_score: currentResult.confidence_score, execution_trace: currentResult.execution_trace, quantitative_metrics: currentResult.quantitative_metrics, image_urls: { primary: currentResult.visual_evidence.primary_image_url, overlay: currentResult.visual_evidence.overlay_image_url, diff: currentResult.visual_evidence.diff_mask_url, fusion: currentResult.visual_evidence.fusion_image_url } }) });
       if (!res.ok) throw new Error("Report generation failed");
       const data = await res.json();
-      window.open(`${API_BASE}${data.report_url}`, "_blank");
+      window.open(apiUrl(data.report_url), "_blank");
     } catch { alert("Failed to compile PDF report."); }
     finally { setIsGeneratingReport(false); }
   };
@@ -256,7 +267,7 @@ export default function Home() {
           {/* Panel content */}
           <div className="sol-panel">
             {activePanel === "upload" && (
-              <ImageUploader inputMode={inputMode} onSelectMode={(mode) => setInputMode(mode)} images={images} onUploadSuccess={handleUploadSuccess} onClear={handleClear} apiBaseUrl={API_BASE} />
+              <ImageUploader inputMode={inputMode} onSelectMode={(mode) => setInputMode(mode)} images={images} onUploadSuccess={handleUploadSuccess} onClear={handleClear} apiBaseUrl={API_BASE_URL} />
             )}
             {activePanel === "predict" && (
               <PredictPanel />
