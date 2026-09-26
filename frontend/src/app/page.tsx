@@ -140,7 +140,7 @@ export default function Home() {
           <source src="/milkyway-bg.mp4" type="video/mp4" />
         </video>
         {/* Gradient overlay to keep UI readable */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80 pointer-events-none" />
       </div>
 
       {/* TOP NAV */}
@@ -351,6 +351,7 @@ export default function Home() {
       {/* ══ MOBILE BOTTOM TAB BAR ══ */}
       <nav className="sol-mobile-tabs" aria-label="Mobile navigation">
         <button
+          type="button"
           id="mob-tab-upload"
           className={`sol-mobile-tab ${activePanel === "upload" ? "sol-mobile-tab-active" : ""}`}
           onClick={() => setActivePanel("upload")}
@@ -359,6 +360,25 @@ export default function Home() {
           <span>Upload</span>
         </button>
         <button
+          type="button"
+          id="mob-tab-predict"
+          className={`sol-mobile-tab ${activePanel === "predict" ? "sol-mobile-tab-active" : ""}`}
+          onClick={() => setActivePanel("predict")}
+        >
+          <Cpu size={18} />
+          <span>Predict</span>
+        </button>
+        <button
+          type="button"
+          id="mob-tab-ai"
+          className={`sol-mobile-tab ${activePanel === "chat" ? "sol-mobile-tab-active" : ""}`}
+          onClick={() => setActivePanel("chat")}
+        >
+          <Sparkles size={18} />
+          <span>AI Chat</span>
+        </button>
+        <button
+          type="button"
           id="mob-tab-missions"
           className={`sol-mobile-tab ${mobileSidebarOpen ? "sol-mobile-tab-active" : ""}`}
           onClick={() => setMobileSidebarOpen(true)}
@@ -366,16 +386,9 @@ export default function Home() {
           <BookOpen size={18} />
           <span>Missions</span>
         </button>
-        <button
-          id="mob-tab-ai"
-          className={`sol-mobile-tab ${activePanel === "chat" ? "sol-mobile-tab-active" : ""}`}
-          onClick={() => setActivePanel("chat")}
-        >
-          <Sparkles size={18} />
-          <span>AI Chat {isProcessing && <span className="sol-tab-pulse" style={{display:"inline-block",marginLeft:"2px"}} />}</span>
-        </button>
         {currentResult ? (
           <button
+            type="button"
             id="mob-tab-trace"
             className={`sol-mobile-tab ${activePanel === "trace" ? "sol-mobile-tab-active" : ""}`}
             onClick={() => setActivePanel("trace")}

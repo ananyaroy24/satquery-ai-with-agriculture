@@ -2988,3 +2988,10 @@ iframe[src*="netlify"] {
     color: #7ee8ff !important;
   }
 }
+
+/* Touch-friendly optimizations for mobile phone app buttons */
+button, a, input, select, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
