@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { CloudSun, Droplets, LoaderCircle, MapPin, Sprout, Thermometer, Waves } from "lucide-react";
 import { AgricultureResponse } from "../types";
-import { API_CONFIGURATION_MESSAGE } from "../lib/api";
 
 interface AgriculturePanelProps {
   sessionId: string;
@@ -19,25 +18,60 @@ export const AgriculturePanel: React.FC<AgriculturePanelProps> = ({ sessionId, h
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // true when running on Netlify without a Python backend configured
+  const netlifyMode = !apiBaseUrl;
+
   useEffect(() => { if (defaultLocation) setLocation(defaultLocation); }, [defaultLocation]);
   useEffect(() => { setResult(null); setError(""); }, [sessionId]);
 
   const assess = async () => {
-    if (!sessionId || !hasImages) { setError("Upload land imagery before starting a crop assessment."); return; }
-    if (location.trim().length < 2) { setError("Enter a town, district, or coordinates to obtain weather conditions."); return; }
-    if (!apiBaseUrl) { setError(API_CONFIGURATION_MESSAGE); return; }
-    setLoading(true); setError("");
+    if (!netlifyMode && !sessionId) {
+      setError("Upload land imagery before starting a crop assessment.");
+      return;
+    }
+    if (!netlifyMode && !hasImages) {
+      setError("Upload land imagery before starting a crop assessment.");
+      return;
+    }
+    if (location.trim().length < 2) {
+      setError("Enter a town, district, or coordinates to obtain weather conditions.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
     try {
-      const response = await fetch(`${apiBaseUrl}/api/agriculture-assessment`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ session_id: sessionId, location: location.trim(), soil_type: soilType }) });
+      let endpoint: string;
+      let body: Record<string, string>;
+
+      if (netlifyMode) {
+        // Use Netlify serverless function — no backend required
+        endpoint = "/api/agriculture-assessment";
+        body = { location: location.trim(), soil_type: soilType };
+      } else {
+        // Use configured Python backend
+        endpoint = `${apiBaseUrl}/api/agriculture-assessment`;
+        body = { session_id: sessionId, location: location.trim(), soil_type: soilType };
+      }
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.detail || "Could not complete the agriculture assessment.");
       setResult(payload);
-    } catch (err) { setError(err instanceof Error ? err.message : "Could not complete the agriculture assessment."); }
-    finally { setLoading(false); }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not complete the agriculture assessment.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return <section className="agri-panel" aria-labelledby="agriculture-title">
-    <div className="agri-heading"><div><span>LAND INTELLIGENCE</span><h2 id="agriculture-title"><Sprout /> Agriculture assessment</h2></div><p>Use land imagery plus a location-based weather lookup to screen crop options.</p></div>
+    <div className="agri-heading"><div><span>LAND INTELLIGENCE</span><h2 id="agriculture-title"><Sprout /> Agriculture assessment</h2></div><p>Use {netlifyMode ? "a location-based weather lookup" : "land imagery plus a location-based weather lookup"} to screen crop options.{netlifyMode && <span style={{ display: "block", fontSize: "12px", color: "#6b8f74", marginTop: "4px" }}>💡 Connect a backend for full image-based NDVI analysis.</span>}</p></div>
     <div className="agri-form"><label><MapPin /> Parcel location<input value={location} onChange={event => setLocation(event.target.value)} placeholder="e.g. Nashik, Maharashtra" aria-label="Parcel location" /></label><label className="soil-select"><Waves /> Soil type<select value={soilType} onChange={event => setSoilType(event.target.value)} aria-label="Soil type"><option>Loamy</option><option>Sandy loam</option><option>Clay loam</option><option>Clay</option><option>Sandy</option><option>Silty</option><option>Black cotton</option></select></label><button onClick={assess} disabled={loading}>{loading ? <LoaderCircle className="animate-spin" /> : <Sprout />}{loading ? "Assessing land…" : "Assess land"}</button></div>
     {error && <p className="agri-error">{error}</p>}
     {result && <div className="agri-result">
