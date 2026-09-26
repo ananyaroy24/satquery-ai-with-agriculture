@@ -2757,12 +2757,16 @@ body { font-family:'Space Grotesk',var(--font-geist-sans),system-ui,sans-serif; 
     padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
   }
 
-  /* Hide desktop panel tabs on mobile */
-  .sol-tabs-desktop {
-    display: none;
+  /* Panel tabs scrollable on mobile */
+  .sol-tabs {
+    display: flex !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding-bottom: 4px !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
-  /* Sidebar hidden on mobile (accessed via bottom bar) */
+  /* Sidebar hidden on mobile (accessed via bottom drawer & tabs) */
   .sol-sidebar {
     display: none;
   }

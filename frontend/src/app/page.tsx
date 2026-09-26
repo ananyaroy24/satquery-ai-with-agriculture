@@ -218,8 +218,8 @@ export default function Home() {
             </div>
           )}
 
-          {/* Panel tabs - hidden on mobile (use bottom bar instead) */}
-          <div className="sol-tabs sol-tabs-desktop">
+          {/* Panel tabs - visible on mobile & desktop */}
+          <div className="sol-tabs flex overflow-x-auto gap-2 py-1 scrollbar-none mb-3">
             <button className={`sol-tab ${activePanel === "upload" ? "sol-tab-active" : ""}`} onClick={() => setActivePanel("upload")}>
               <Layers size={12} /> Payload Ingestion
             </button>
@@ -234,6 +234,23 @@ export default function Home() {
                 <Activity size={12} /> Execution Trace
               </button>
             )}
+          </div>
+
+          {/* Mobile Suggested Queries Carousel */}
+          <div className="flex md:hidden items-center gap-1.5 overflow-x-auto py-1.5 px-1 scrollbar-none mb-3">
+            <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider shrink-0 flex items-center gap-1">
+              <Sparkles size={10} /> Prompts:
+            </span>
+            {recommendedQueries.map((q, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => { setActivePanel("chat"); handleSendMessage(q); }}
+                className="shrink-0 px-2.5 py-1 text-[11px] rounded-full bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-500/30 text-cyan-200 transition active:scale-95 flex items-center gap-1"
+              >
+                <span>{q}</span>
+              </button>
+            ))}
           </div>
 
           {/* Panel content */}
@@ -409,7 +426,7 @@ export default function Home() {
         )}
       </nav>
 
-      {/* ══ MOBILE MISSION DRAWER ══ */}
+      {/* ══ MOBILE MISSION & CONTROL DRAWER ══ */}
       {mobileSidebarOpen && (
         <div
           className="sol-mobile-drawer-overlay"
@@ -417,32 +434,109 @@ export default function Home() {
         >
           <div className="sol-mobile-drawer">
             <div className="sol-mobile-drawer-header">
-              <span className="sol-sidebar-label">MISSION LIBRARY</span>
+              <span className="sol-sidebar-label flex items-center gap-1.5 text-cyan-300">
+                <Globe size={14} /> MISSION CONTROL & SYSTEM STATUS
+              </span>
               <button
                 onClick={() => setMobileSidebarOpen(false)}
                 className="sol-mobile-drawer-close"
-                aria-label="Close missions"
+                aria-label="Close drawer"
               >
                 <X size={20} />
               </button>
             </div>
-            <nav className="sol-mobile-drawer-list">
-              {samples.map((s) => (
-                <button
-                  key={s.id}
-                  onClick={() => { handleSelectSample(s.id); setMobileSidebarOpen(false); }}
-                  className={`sol-mission-card ${selectedSampleId === s.id ? "sol-mission-active" : ""}`}
-                  style={{width:"100%"}}
-                >
-                  <div className="sol-mission-icon"><Globe size={14} /></div>
-                  <div className="sol-mission-info">
-                    <span className="sol-mission-title">{s.title}</span>
-                    <span className="sol-mission-sub">{s.location}</span>
+
+            <div className="space-y-4">
+              {/* Mission Datasets */}
+              <div>
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                  CONSTELLATION MISSION LIBRARY ({samples.length})
+                </div>
+                <nav className="sol-mobile-drawer-list">
+                  {samples.map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => { handleSelectSample(s.id); setMobileSidebarOpen(false); }}
+                      className={`sol-mission-card ${selectedSampleId === s.id ? "sol-mission-active" : ""}`}
+                      style={{ width: "100%" }}
+                    >
+                      <div className="sol-mission-icon"><Globe size={14} /></div>
+                      <div className="sol-mission-info">
+                        <span className="sol-mission-title">{s.title}</span>
+                        <span className="sol-mission-sub">{s.location}</span>
+                      </div>
+                      <ChevronRight size={12} className="sol-mission-arrow" />
+                    </button>
+                  ))}
+                </nav>
+              </div>
+
+              {/* System Telemetry Stats */}
+              <div>
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                  SYSTEM TELEMETRY
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {SYSTEM_STATS.map((stat) => (
+                    <div key={stat.label} className={`p-2 rounded-lg bg-slate-900/80 border border-slate-800 flex items-center justify-between text-[11px]`}>
+                      <span className="flex items-center gap-1.5 text-slate-300">
+                        <stat.icon size={12} className="text-cyan-400" /> {stat.label}
+                      </span>
+                      <b className="text-cyan-300">{stat.value}{stat.unit}</b>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Suggested AI Queries */}
+              <div>
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                  SUGGESTED AI QUERIES
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  {recommendedQueries.map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => { setActivePanel("chat"); handleSendMessage(q); setMobileSidebarOpen(false); }}
+                      className="text-left px-3 py-2 rounded-lg bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-800/50 text-cyan-200 text-xs flex items-center justify-between transition"
+                    >
+                      <span className="flex items-center gap-1.5"><Sparkles size={11} className="text-cyan-400" /> {q}</span>
+                      <ChevronRight size={12} className="text-cyan-500" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Active Mission Details */}
+              {activeSample && (
+                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs space-y-1">
+                  <div className="font-bold text-slate-200">{activeSample.title}</div>
+                  <div className="text-slate-400 text-[11px] leading-relaxed">{activeSample.description}</div>
+                  <div className="flex flex-wrap gap-1 pt-1">
+                    {activeSample.taxonomies.map((t) => (
+                      <span key={t} className="px-1.5 py-0.5 rounded text-[9px] bg-cyan-950 text-cyan-300 border border-cyan-800">{t}</span>
+                    ))}
                   </div>
-                  <ChevronRight size={12} className="sol-mission-arrow" />
-                </button>
-              ))}
-            </nav>
+                </div>
+              )}
+
+              {/* Last Result Summary */}
+              {currentResult && (
+                <div className="p-3 rounded-xl bg-cyan-950/40 border border-cyan-800/60 text-xs space-y-1.5">
+                  <div className="font-bold text-cyan-300 flex items-center justify-between">
+                    <span>LAST ANALYSIS RESULT</span>
+                    <span>{Math.round(currentResult.confidence_score * 100)}% Confidence</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300 text-[11px]">
+                    <span>Task: <b>{currentResult.detected_task}</b></span>
+                    <span>Model: <b>{currentResult.selected_model}</b></span>
+                  </div>
+                  <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full" style={{ width: `${currentResult.confidence_score * 100}%` }} />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
