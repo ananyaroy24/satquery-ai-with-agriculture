@@ -6,6 +6,7 @@ import {
   Sprout, Thermometer, Upload, Waves, X,
 } from "lucide-react";
 import { AgricultureResponse } from "../types";
+import { runClientAgricultureAssessment } from "../lib/clientAgricultureAssessment";
 
 interface AgriculturePanelProps {
   sessionId: string;
@@ -173,16 +174,16 @@ export const AgriculturePanel: React.FC<AgriculturePanelProps> = ({
         setLoadingMsg("Analysing image pixels…");
         const { vegetation, moisture, assessment } = await analyzeImagePixels(localImage!);
 
-        // ── Step 2: call Netlify serverless function with real proxy values ──
+        // ── Step 2: fetch live weather & score crops directly in the browser ──
         setLoadingMsg("Fetching live weather & scoring crops…");
-        endpoint = "/api/agriculture-assessment";
-        body = {
-          location: location.trim(),
-          soil_type: soilType,
-          vegetation_proxy: vegetation,
-          soil_moisture_proxy: moisture,
-          land_assessment_override: assessment,
-        };
+        const clientResult = await runClientAgricultureAssessment(
+          location.trim(),
+          soilType,
+          vegetation,
+          moisture,
+          assessment
+        );
+        setResult(clientResult);
       } else {
         // ── Python backend path ──
         setLoadingMsg("Assessing land…");
@@ -192,17 +193,17 @@ export const AgriculturePanel: React.FC<AgriculturePanelProps> = ({
           location: location.trim(),
           soil_type: soilType,
         };
-      }
 
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const payload = await response.json();
-      if (!response.ok)
-        throw new Error(payload.detail || "Could not complete the agriculture assessment.");
-      setResult(payload);
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const payload = await response.json();
+        if (!response.ok)
+          throw new Error(payload.detail || "Could not complete the agriculture assessment.");
+        setResult(payload);
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Could not complete the agriculture assessment."
