@@ -426,7 +426,7 @@ export default function Home() {
           </button>
         ) : (
           <Link
-            href="/agriculture"
+            href="/agriculture/"
             prefetch={true}
             className="sol-mobile-tab"
             id="mob-tab-agri"

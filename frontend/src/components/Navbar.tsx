@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Action Controls */}
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <Link 
-            href="/agriculture"
+            href="/agriculture/"
             prefetch={true}
             className="agri-nav-link flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-emerald-950/50 hover:bg-emerald-900/60 border border-emerald-500/30 text-emerald-300 transition"
           >

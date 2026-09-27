@@ -79,7 +79,7 @@ export default function AgricultureDashboard() {
  {/* ── NAVIGATION ── */}
   <header className="oripio-nav">
     <div className="oripio-nav-inner">
-      <Link href="/agriculture" className="oripio-brand">
+      <Link href="/agriculture/" className="oripio-brand">
         <div className="oripio-logo-icon">
           <Leaf size={22} />
         </div>
