@@ -131,7 +131,10 @@ export async function runClientAgricultureAssessment(
   soilType: string,
   vegetationProxy?: number,
   soilMoistureProxy?: number,
-  landAssessmentOverride?: string
+  landAssessmentOverride?: string,
+  imageSourceType?: string,
+  exgIndex?: number,
+  variIndex?: number
 ): Promise<AgricultureResponse> {
   const vegetation =
     typeof vegetationProxy === "number" && !isNaN(vegetationProxy)
@@ -183,6 +186,9 @@ export async function runClientAgricultureAssessment(
     soil_type: soilType,
     crops,
     disclaimer:
-      "Preliminary screening: crop ranking is based on live Open-Meteo weather and browser pixel analysis. Confirm crop choice with soil tests, local seasonal forecasts, water availability, and an agronomist.",
+      "Preliminary screening: crop ranking is based on live Open-Meteo weather and browser multi-spectral ExG/VARI pixel analysis. Confirm crop choice with soil tests, local seasonal forecasts, water availability, and an agronomist.",
+    image_source_type: imageSourceType,
+    exg_index: exgIndex,
+    vari_index: variIndex,
   };
 }

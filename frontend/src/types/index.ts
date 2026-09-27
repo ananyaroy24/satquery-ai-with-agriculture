@@ -114,4 +114,7 @@ export interface AgricultureResponse {
   soil_type: string;
   crops: CropSuitability[];
   disclaimer: string;
+  image_source_type?: string;
+  exg_index?: number;
+  vari_index?: number;
 }
