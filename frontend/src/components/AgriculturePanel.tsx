@@ -143,6 +143,7 @@ export const AgriculturePanel: React.FC<AgriculturePanelProps> = ({
   defaultLocation = "",
   apiBaseUrl,
 }) => {
+  const [mounted, setMounted] = useState(false);
   const [location, setLocation] = useState(defaultLocation);
   const [soilType, setSoilType] = useState("Loamy");
   const [result, setResult] = useState<AgricultureResponse | null>(null);
@@ -150,10 +151,14 @@ export const AgriculturePanel: React.FC<AgriculturePanelProps> = ({
   const [loadingMsg, setLoadingMsg] = useState("Assessing land…");
   const [error, setError] = useState("");
 
-  // Netlify / static-site mode: no Python backend configured
-  const netlifyMode = !apiBaseUrl;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  // Client-side image state (used only in netlify mode)
+  // Netlify / static-site mode: no Python backend configured or mounted check
+  const netlifyMode = mounted ? !apiBaseUrl : true;
+
+  // Client-side image state (used in static mode)
   const [localImage, setLocalImage] = useState<File | null>(null);
   const [localPreview, setLocalPreview] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);

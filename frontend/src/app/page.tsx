@@ -68,7 +68,7 @@ export default function Home() {
         setSamples(availableSamples);
         if (availableSamples.length > 0) handleSelectSample(availableSamples[0].id, availableSamples);
       })
-      .catch((err) => console.error("Could not fetch samples:", err));
+      .catch((err) => console.debug("Sample datasets API offline:", err));
   }, []);
 
   const handleSelectSample = async (sampleId: string, availableSamples = samples) => {
